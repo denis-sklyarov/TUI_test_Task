@@ -1,0 +1,16 @@
+{
+  "name": "TuiTestTask",
+  "version": "1.0.0",
+  "scripts": {
+    "test" : "npx playwright test tests/test-task.spec.ts --trace on"
+  },
+  "keywords": [],
+  "author": "Denys Skliarov",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@playwright/test": "^1.55.1",
+    "@types/node": "^24.5.2",
+    "dotenv": "^17.2.2"
+  }
+}
