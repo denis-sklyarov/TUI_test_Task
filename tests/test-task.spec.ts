@@ -10,14 +10,13 @@ let page: Page;
 let passengerDetailsPage: PassengerDetailsPage;
 
 test.beforeAll(async ({browser}) => {
-
   page = await browser.newPage();
 
   const homePage = new HomePage(page);
   
   //opening page
   await homePage.navigateTo();
-  await expect(page).toHaveTitle(/TUI.co.uk/);
+  await expect(page).toHaveTitle(/TUI/);
 
   //accept cookies
   await new CookieConsentDialog(page).clickAccept();

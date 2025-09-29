@@ -10,7 +10,8 @@ export class HomePage extends BasePage{
     readonly destinationItemSelector: string = '[data-testid="country-label"] button:not([disabled])';
     readonly availableDepartureDaySelector: string = '.day.available';
     readonly childAgeSelector: string = '[data-testid="select_child-age"]';
-    readonly childAgeOptionSelector: string = 'option'
+    readonly childAgeOptionSelector: string = 'option';
+    readonly durationItemSelector: string = 'option[aria-disabled="false"]';
 
     readonly departureInput: Locator;
     readonly departureItem: Locator;
@@ -32,30 +33,30 @@ export class HomePage extends BasePage{
         super(page);
         this.logger = log4js.getLogger();
 
-        this.doneButton = this.page.locator('[data-testid="button_done"]');
+        this.doneButton = this.page.getByTestId('button_done');
 
         //departure elements
-        this.departureInput = this.page.locator('[data-testid="input_departure-airport"]');
+        this.departureInput = this.page.getByTestId('input_departure-airport');
         this.departureItem = this.page.locator(this.departureItemSelector);
 
         //destination elements
-        this.destinationListButton = this.page.locator('[data-testid="inputIcon_destinations"]');
+        this.destinationListButton = this.page.getByTestId('inputIcon_destinations');
         this.destinationItem = this.page.locator(this.destinationItemSelector);
 
         //available departure day elements
-        this.availableDepartureDayInput = this.page.locator('[data-testid="input_departure-date"]');
+        this.availableDepartureDayInput = this.page.getByTestId('input_departure-date');
         this.availableDepartureDay = this.page.locator(this.availableDepartureDaySelector);
 
         //duration elements
-        this.durationSelect = this.page.locator('[data-testid="select_duration"]');
-        this.durationItem = this.durationSelect.locator('option[aria-disabled="false"]');
+        this.durationSelect = this.page.getByTestId('select_duration');
+        this.durationItem = this.durationSelect.locator(this.durationItemSelector);
 
         // guests and room elements
-        this.guestsAndRoodInput = this.page.locator('[data-testid="input_pax-and-rooms"]');
+        this.guestsAndRoodInput = this.page.getByTestId('input_pax-and-rooms');
         this.nonAdultPlusButton = this.page.locator('[aria-label="nonAdults plus"]');
         this.childAgeSelect = this.page.locator(this.childAgeSelector);
 
-        this.searchButton = this.page.locator('[data-testid="search-button"]')
+        this.searchButton = this.page.getByTestId('search-button')
     }
 
     //opening home page url
@@ -74,6 +75,10 @@ export class HomePage extends BasePage{
 
     async waitForAvailableDepartureDay(){
         await this.page.waitForSelector(this.availableDepartureDaySelector);
+    }
+
+    async waitForDurationItem(){
+        await this.page.waitForSelector(this.durationItemSelector);
     }
 
     //selecting random available destination item 
@@ -99,7 +104,7 @@ export class HomePage extends BasePage{
 
     //selecting random available duration 
     async selectRandomDuration(){
-        await this.durationItem.waitFor();
+        await this.waitForDurationItem();
         
         await this.selectRandomItem(this.durationItem);
     }
@@ -115,9 +120,8 @@ export class HomePage extends BasePage{
 
     private async selectRandomItem(item:Locator) {
         const maxValue = await item.count();
-        this.logger.debug(maxValue);
         const itemToSelect = Utils.getRandomNumber(1, maxValue);
-        const text = await item.nth(itemToSelect).innerText();
+        const text = await item.nth(itemToSelect).textContent();
         this.logger.debug(itemToSelect + text);
         await item.nth(itemToSelect).click();
     }

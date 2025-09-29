@@ -13,8 +13,8 @@ export class DestinationsPage extends BasePage{
         super(page);
         this.logger = log4js.getLogger();
 
-        this.continueToHotelButton = this.page.locator('[data-test-id="continue-button"]');
-        this.hotelName = this.page.locator('[data-test-id="hotel-name"]');
+        this.continueToHotelButton = this.page.getByTestId('continue-button');
+        this.hotelName = this.page.getByTestId('"hotel-name');
     }
 
     async continueToHotel(hotelNum: number = 0){
