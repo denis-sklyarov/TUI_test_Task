@@ -99,7 +99,7 @@ export class HomePage extends BasePage{
         await this.selectRandomItem(this.durationItem);
     }
 
-    async chooseRandomChildAge(childNum:number = 1){
+    async chooseRandomChildAge(childNum:number = 0){
         await this.childAgeSelect.waitFor();
         
         //getting child age select by number param
