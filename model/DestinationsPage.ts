@@ -14,7 +14,7 @@ export class DestinationsPage extends BasePage{
         this.logger = log4js.getLogger();
 
         this.continueToHotelButton = this.page.getByTestId('continue-button');
-        this.hotelName = this.page.getByTestId('"hotel-name');
+        this.hotelName = this.page.getByTestId('hotel-name');
     }
 
     async continueToHotel(hotelNum: number = 0){
