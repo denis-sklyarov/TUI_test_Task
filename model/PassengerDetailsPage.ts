@@ -23,18 +23,22 @@ export class PassengerDetailsPage extends BasePage{
         this.continueToPaymentButton = this.page.locator('#PassengerContinueButton__component button');
     }
 
+    //return error message for title field by given passenger index
     async getTitleErrorMessage(index:number = 0): Promise<string | null>{
         return await this.page.locator(this.titleErrorSelector).nth(index).textContent();
     }
 
+    //return error message for first name field by given passenger index
     async getFirstNameErrorMessage(index:number = 0): Promise<string | null>{
         return await this.page.locator(this.firstNameErrorSelector).nth(index).textContent();
     }
 
+    //return error message for last name field by given passenger index
     async getLastNameErrorMessage(index:number = 0): Promise<string | null>{
         return await this.page.locator(this.lastNameErrorSelector).nth(index).textContent();
     }
 
+    //return error message for date of birth field by given passenger index
     async getDateOfBirthErrorMessage(index:number = 0): Promise<string | null>{
         return await this.page.locator(this.dateOfBirthErrorSelector).nth(index).textContent();
     }

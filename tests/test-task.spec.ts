@@ -74,6 +74,7 @@ test.afterAll(async () => {
   await page.close();
 });
 
+//running same test cases for 3 different passengers
 [0,1,2].forEach((id) => {
   test(`Check correct title error message for ${id + 1} passenger`, async () => {
      await expect(await passengerDetailsPage.getTitleErrorMessage(id)).toBe('Please select a title.');
@@ -92,6 +93,7 @@ test.afterAll(async () => {
   });
 });
 
+//common test cases
 test(`Check correct address finder error message`, async () => {
      await expect(passengerDetailsPage.addressFinderErrorMessage).toContainText('Please enter an address');
 });

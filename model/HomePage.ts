@@ -2,6 +2,8 @@ import { BasePage } from './BasePage';
 import { Utils } from '../utils/Utils';
 import { Locator, Page } from '@playwright/test';
 import { Config } from '../config/config';
+import { Logger } from 'log4js';
+import * as log4js from "log4js";
 
 export class HomePage extends BasePage{
     readonly departureItemSelector: string = 'label button:not([disabled])';
@@ -23,9 +25,12 @@ export class HomePage extends BasePage{
     readonly nonAdultPlusButton: Locator;
     readonly childAgeSelect: Locator;
     readonly searchButton: Locator;
+    
+    readonly logger: Logger;
 
     constructor(page: Page){
         super(page);
+        this.logger = log4js.getLogger();
 
         this.doneButton = this.page.locator('[data-testid="button_done"]');
 
@@ -110,10 +115,10 @@ export class HomePage extends BasePage{
 
     private async selectRandomItem(item:Locator) {
         const maxValue = await item.count();
-        console.log(maxValue);
+        this.logger.debug(maxValue);
         const itemToSelect = Utils.getRandomNumber(1, maxValue);
         const text = await item.nth(itemToSelect).innerText();
-        console.log(itemToSelect + text);
+        this.logger.debug(itemToSelect + text);
         await item.nth(itemToSelect).click();
     }
 }

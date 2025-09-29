@@ -1,4 +1,4 @@
-//class to provide access to project config
+//class to provide access to config
 export class Config{
     static getBaseUrl(): string {
         const envName = process.env.ENV;
