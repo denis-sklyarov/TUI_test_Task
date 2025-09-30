@@ -2,16 +2,21 @@
   "name": "TuiTestTask",
   "version": "1.0.0",
   "scripts": {
-    "test": "npx playwright test tests/test-task.spec.ts --trace on"
+    "eslint": "npx eslint .",
+    "test": "npm run eslint && npx playwright test tests/test-task.spec.ts --trace on"
   },
   "keywords": [],
   "author": "Denys Skliarov",
   "license": "ISC",
   "description": "",
-  "dependencies": {
+  "devDependencies": {
+    "@eslint/js": "^9.36.0",
     "@playwright/test": "^1.55.1",
     "@types/node": "^24.5.2",
     "dotenv": "^17.2.2",
-    "log4js": "^6.9.1"
+    "eslint": "^9.36.0",
+    "log4js": "^6.9.1",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.45.0"
   }
 }
