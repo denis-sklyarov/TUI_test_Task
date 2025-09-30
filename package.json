@@ -4,7 +4,7 @@
   "scripts": {
     "eslint": "npx eslint .",
     "build": "tsc -p .",
-    "test": "npm run build && npm run eslint && npx playwright test tests/test-task.spec.ts --trace on"
+    "test": "npm run build && npm run eslint && npx playwright test -c src/playwright.config.ts tests/test-task.spec.ts --trace on"
   },
   "keywords": [],
   "author": "Denys Skliarov",

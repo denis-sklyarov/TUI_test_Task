@@ -5,7 +5,7 @@ import { DestinationsPage } from '../model/DestinationsPage';
 import { HotelDetailsPage } from '../model/HotelDetailsPage';
 import { BookFlightsPage } from '../model/BookFlightsPage';
 import { PassengerDetailsPage } from '../model/PassengerDetailsPage';
-import * as data from '../testData/data.json';
+import * as data from '../../testData/data.json';
 
 // Added fixture for all tests in this file
 const test = base.extend<{ passengerDetailsPage: PassengerDetailsPage }>({

@@ -6,7 +6,7 @@ import * as log4js from "log4js";
  */
 import dotenv from 'dotenv';
 import path from 'path';
-dotenv.config({ path: path.resolve(__dirname, '.env') });
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 //initializing logger. Placed here to run as fast as possible
 const logger = log4js.getLogger();
@@ -38,8 +38,7 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], channel: 'chrome',
-        //  viewport: null, 
+      use: { ...devices['Desktop Chrome'], channel: 'chrome', 
          headless: false },
     },
   ],
