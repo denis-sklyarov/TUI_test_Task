@@ -1,4 +1,4 @@
-import test, { expect, Page } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 import { CookieConsentDialog } from '../model/CookieConsentDialog';
 import { HomePage } from '../model/HomePage';
 import { DestinationsPage } from '../model/DestinationsPage';
@@ -7,13 +7,9 @@ import { BookFlightsPage } from '../model/BookFlightsPage';
 import { PassengerDetailsPage } from '../model/PassengerDetailsPage';
 import * as data from '../testData/data.json';
 
-let page: Page;
-let passengerDetailsPage: PassengerDetailsPage;
-
-test.describe.serial('TUI testing task', () => {
-   test.beforeAll(async ({browser}) => {
-      page = await browser.newPage();
-
+// Extend basic test by providing a "todoPage" fixture.
+const test = base.extend<{ passengerDetailsPage: PassengerDetailsPage }>({
+   passengerDetailsPage: async ({ page }, use) => {
       const homePage = new HomePage(page);
       
       //opening page
@@ -24,7 +20,7 @@ test.describe.serial('TUI testing task', () => {
       await new CookieConsentDialog(page).clickAccept();
 
       //handle popup
-      //await homePage.waitForNotificationPopUp();
+      await homePage.waitForNotificationPopUp();
 
       //select random available departure
       await homePage.departureInput.click();
@@ -66,48 +62,48 @@ test.describe.serial('TUI testing task', () => {
       //continue to passenger details page
       await bookFlightsPage.continueToPassengerDetailsButton.click();
 
-      passengerDetailsPage = new PassengerDetailsPage(page);
+      const passengerDetailsPage = new PassengerDetailsPage(page);
       
       await passengerDetailsPage.continueToPaymentButton.click();
+      await use(passengerDetailsPage);
+   },
+});
+
+//configure this file to run in single worker because all checks happens on same page and in same state
+test.describe.configure({ mode: 'serial' });
+
+//running same test cases for 3 different passengers
+data.passengers.forEach((id) => {
+   test(`Check correct title error message for ${id + 1} passenger`, async ({passengerDetailsPage}) => {
+      await expect(await passengerDetailsPage.getTitleErrorMessage(id)).toBe('Please select a title.');
    });
 
-   test.afterAll(async () => {
-      await page.close();
+   test(`Check correct first name error message for ${id + 1} passenger`, async ({passengerDetailsPage}) => {
+      await expect(await passengerDetailsPage.getFirstNameErrorMessage(id)).toBe('This field is required');
    });
 
-   //running same test cases for 3 different passengers
-   data.passengers.forEach((id) => {
-      test(`Check correct title error message for ${id + 1} passenger`, async () => {
-         await expect(await passengerDetailsPage.getTitleErrorMessage(id)).toBe('Please select a title.');
-      });
-
-      test(`Check correct first name error message for ${id + 1} passenger`, async () => {
-         await expect(await passengerDetailsPage.getFirstNameErrorMessage(id)).toBe('This field is required');
-      });
-
-      test(`Check correct last name error message for ${id + 1} passenger`, async () => {
-         await expect(await passengerDetailsPage.getLastNameErrorMessage(id)).toBe('This field is required');
-      });
-
-      test(`Check correct date of birth error message for ${id + 1} passenger`, async () => {
-         await expect(await passengerDetailsPage.getDateOfBirthErrorMessage(id)).toBe('Please use the format DD/MM/YYYY');
-      });
+   test(`Check correct last name error message for ${id + 1} passenger`, async ({passengerDetailsPage}) => {
+      await expect(await passengerDetailsPage.getLastNameErrorMessage(id)).toBe('This field is required');
    });
 
-   //common test cases
-   test(`Check correct address finder error message`, async () => {
-      await expect(passengerDetailsPage.addressFinderErrorMessage).toContainText('Please enter an address');
+   test(`Check correct date of birth error message for ${id + 1} passenger`, async ({passengerDetailsPage}) => {
+      await expect(await passengerDetailsPage.getDateOfBirthErrorMessage(id)).toBe('Please use the format DD/MM/YYYY');
    });
+});
 
-   test(`Check correct mobile phone error message`, async () => {
-      await expect(passengerDetailsPage.mobilePhoneErrorMessage).toContainText('Please enter a valid UK phone number with 11 digits.');
-   });
+//common test cases
+test(`Check correct address finder error message`, async ({passengerDetailsPage}) => {
+   await expect(passengerDetailsPage.addressFinderErrorMessage).toContainText('Please enter an address');
+});
 
-   test(`Check correct email address error message`, async () => {
-      await expect(passengerDetailsPage.emailErrorMessage).toContainText('Please enter a valid email address. e.g. name@email.com.');
-   });
+test(`Check correct mobile phone error message`, async ({passengerDetailsPage}) => {
+   await expect(passengerDetailsPage.mobilePhoneErrorMessage).toContainText('Please enter a valid UK phone number with 11 digits.');
+});
 
-   test(`Check correct important info error message`, async () => {
-      await expect(passengerDetailsPage.importantInfoErrorMessage).toContainText("Don't forget to tick the important information box to confirm you've read and understood it.");
-   });
+test(`Check correct email address error message`, async ({passengerDetailsPage}) => {
+   await expect(passengerDetailsPage.emailErrorMessage).toContainText('Please enter a valid email address. e.g. name@email.com.');
+});
+
+test(`Check correct important info error message`, async ({passengerDetailsPage}) => {
+   await expect(passengerDetailsPage.importantInfoErrorMessage).toContainText("Don't forget to tick the important information box to confirm you've read and understood it.");
 });

@@ -122,7 +122,7 @@ export class HomePage extends BasePage{
         const maxValue = await item.count();
         const itemToSelect = Utils.getRandomNumber(1, maxValue);
         const text = await item.nth(itemToSelect).textContent();
-        this.logger.debug(itemToSelect + text);
+        this.logger.debug(itemToSelect + (text === null ? "text is empty" : text ));
         await item.nth(itemToSelect).click();
     }
 }
