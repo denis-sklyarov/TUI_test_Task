@@ -7,6 +7,7 @@ export default defineConfig([
     tseslint.configs.recommended,
 	globalIgnores([
 		"node_modules/*", 
-        "playwright-report/*"
+        "playwright-report/*",
+        "dist/*"
 	]),
 ]);

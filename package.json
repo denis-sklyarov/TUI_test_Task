@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "eslint": "npx eslint .",
-    "test": "npm run eslint && npx playwright test tests/test-task.spec.ts --trace on"
+    "build": "tsc -p .",
+    "test": "npm run build && npm run eslint && npx playwright test tests/test-task.spec.ts --trace on"
   },
   "keywords": [],
   "author": "Denys Skliarov",
