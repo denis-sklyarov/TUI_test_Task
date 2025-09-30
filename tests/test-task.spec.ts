@@ -7,7 +7,7 @@ import { BookFlightsPage } from '../model/BookFlightsPage';
 import { PassengerDetailsPage } from '../model/PassengerDetailsPage';
 import * as data from '../testData/data.json';
 
-// Extend basic test by providing a "todoPage" fixture.
+// Added fixture for all tests in this file
 const test = base.extend<{ passengerDetailsPage: PassengerDetailsPage }>({
    passengerDetailsPage: async ({ page }, use) => {
       const homePage = new HomePage(page);
